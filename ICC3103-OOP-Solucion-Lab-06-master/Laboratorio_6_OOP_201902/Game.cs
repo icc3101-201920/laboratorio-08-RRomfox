@@ -4,7 +4,10 @@ using Laboratorio_6_OOP_201902.Static;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace Laboratorio_6_OOP_201902
@@ -46,6 +49,21 @@ namespace Laboratorio_6_OOP_201902
             {
                 return this.players;
             }
+            set
+            {
+                players = value;
+            }
+        }
+        public int Turn
+        {
+            get
+            {
+                return this.turn;
+            }
+            set
+            {
+                turn = value;
+            }
         }
         public Player ActivePlayer
         {
@@ -64,6 +82,10 @@ namespace Laboratorio_6_OOP_201902
             {
                 return this.decks;
             }
+            set
+            {
+                decks = value;
+            }
         }
         public List<SpecialCard> Captains
         {
@@ -71,12 +93,20 @@ namespace Laboratorio_6_OOP_201902
             {
                 return this.captains;
             }
+            set
+            {
+                captains = value;
+            }
         }
         public Board BoardGame
         {
             get
             {
                 return this.boardGame;
+            }
+            set
+            {
+                boardGame = value;
             }
         }
   
@@ -111,9 +141,22 @@ namespace Laboratorio_6_OOP_201902
         
         public void Play()
         {
+            string[] loadChecker = Directory.GetFiles(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files", "Game*");
+            if (loadChecker.Any())
+            {
+                Visualization.ShowProgramMessage("Load previous game data?\n");
+                Visualization.ShowListOptions(new List<string>() { "Yes", "No" });
+                int lc = Visualization.GetUserInput(1);
+                if (lc == 0)
+                {
+                    Visualization.ClearConsole();
+                    LoadData();
+                    turn += 1;
+                }
+            }
+            
             int userInput = 0;
             int firstOrSecondUser = ActivePlayer.Id == 0 ? 0 : 1;
-            
 
             //turno 0 o configuracion
             if (turn == 0)
@@ -157,16 +200,15 @@ namespace Laboratorio_6_OOP_201902
                     }
                     firstOrSecondUser = ActivePlayer.Id == 0 ? 1 : 0;
                 }
-                
-                foreach(Player player in players)
-                {
-                    player.SaveData();
-                }
-
                 turn += 1;
+                SaveData();               
+            }
+            if (turn == 1)
+            {
+                Console.WriteLine("Data Loaded!");
             }
 
-            
+
         }
         public void AddDecks()
         {
@@ -219,6 +261,113 @@ namespace Laboratorio_6_OOP_201902
                 string[] cardDetails = line.Split(",");
                 captains.Add(new SpecialCard(cardDetails[1], (EnumType)Enum.Parse(typeof(EnumType), cardDetails[2]), cardDetails[3]));
             }
+        }
+
+
+        public void SaveData()
+        {
+            // Streams donde guardaremos la informacion
+            string fileName = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameDecks.txt";
+            FileStream fs = new FileStream(fileName, FileMode.Create);
+            IFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(fs, Decks);
+            fs.Close();
+
+            string fileName1 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GamePlayers.txt";
+            FileStream fs1 = new FileStream(fileName1, FileMode.Create);
+            IFormatter formatter1 = new BinaryFormatter();
+            formatter1.Serialize(fs1, Players);
+            fs1.Close();
+
+            string fileName2 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameActivePlayer.txt";
+            FileStream fs2 = new FileStream(fileName2, FileMode.Create);
+            IFormatter formatter2 = new BinaryFormatter();
+            formatter2.Serialize(fs2, ActivePlayer);
+            fs2.Close();
+
+            string fileName3 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameBoardGame.txt";
+            FileStream fs3 = new FileStream(fileName3, FileMode.Create);
+            IFormatter formatter3 = new BinaryFormatter();
+            formatter3.Serialize(fs3, BoardGame );
+            fs3.Close();
+
+            //string fileName4 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameTurn.txt";
+            //FileStream fs4 = new FileStream(fileName4, FileMode.Create);
+            //IFormatter formatter4 = new BinaryFormatter();
+            //formatter4.Serialize(fs4, Turn);
+            //fs4.Close();
+
+            string fileName5 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameCaptains.txt";
+            FileStream fs5 = new FileStream(fileName5, FileMode.Create);
+            IFormatter formatter5 = new BinaryFormatter();
+            formatter5.Serialize(fs5, Captains);
+            fs5.Close();
+            
+        }
+
+        public bool LoadData()
+        {
+            string fileName = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameDecks.txt";
+            if (!File.Exists(fileName))
+            {
+                return false;
+            }
+            FileStream fs = new FileStream(fileName, FileMode.Open);
+            IFormatter formatter = new BinaryFormatter();
+            Decks = formatter.Deserialize(fs) as List<Deck>;
+            fs.Close();
+
+            string fileName1 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GamePlayers.txt";
+            if (!File.Exists(fileName1))
+            {
+                return false;
+            }
+            FileStream fs1 = new FileStream(fileName1, FileMode.Open);
+            IFormatter formatter1 = new BinaryFormatter();
+            Players = formatter1.Deserialize(fs1) as Player[];
+            fs1.Close();
+
+            string fileName2 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameActivePlayer.txt";
+            if (!File.Exists(fileName2))
+            {
+                return false;
+            }
+            FileStream fs2 = new FileStream(fileName2, FileMode.Open);
+            IFormatter formatter2 = new BinaryFormatter();
+            ActivePlayer = formatter2.Deserialize(fs2) as Player;
+            fs2.Close();
+
+            string fileName3 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameBoardGame.txt";
+            if (!File.Exists(fileName3))
+            {
+                return false;
+            }
+            FileStream fs3 = new FileStream(fileName3, FileMode.Open);
+            IFormatter formatter3 = new BinaryFormatter();
+            BoardGame = formatter3.Deserialize(fs3) as Board;
+            fs3.Close();
+
+            //string fileName4 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameTurn.txt";
+            //if (!File.Exists(fileName4))
+            //{
+            //    return false;
+            //}
+            //FileStream fs4 = new FileStream(fileName4, FileMode.Open);
+            //IFormatter formatter4 = new BinaryFormatter();
+            //Turn = int.Parse(formatter4.Deserialize(fs4) as string);
+            //fs4.Close();
+
+            string fileName5 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameCaptains.txt";
+            if (!File.Exists(fileName5))
+            {
+                return false;
+            }
+            FileStream fs5 = new FileStream(fileName5, FileMode.Open);
+            IFormatter formatter5 = new BinaryFormatter();
+            Captains = formatter5.Deserialize(fs5) as List<SpecialCard>;
+            fs5.Close();
+
+            return true;
         }
     }
 }

@@ -181,85 +181,85 @@ namespace Laboratorio_6_OOP_201902
             }
         }
 
-        public void SaveData()
-        {
-            // Streams donde guardaremos la informacion
-            string fileName = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Decks"+Id.ToString()+".txt";
-            FileStream fs = new FileStream(fileName, FileMode.Create);
-            IFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(fs, Deck);
-            fs.Close();
-            string fileName1 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\LifePoints" + Id.ToString() + ".txt";
-            FileStream fs1 = new FileStream(fileName1, FileMode.Create);
-            IFormatter formatter1 = new BinaryFormatter();
-            formatter.Serialize(fs1, LifePoints);
-            fs.Close();
-            string fileName2 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\AttackPoints" + Id.ToString() + ".txt";
-            FileStream fs2 = new FileStream(fileName2, FileMode.Create);
-            IFormatter formatter2 = new BinaryFormatter();
-            formatter.Serialize(fs2, AttackPoints);
-            fs.Close();
-            string fileName3 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Hand" + Id.ToString() + ".txt";
-            FileStream fs3 = new FileStream(fileName3, FileMode.Create);
-            IFormatter formatter3 = new BinaryFormatter();
-            formatter.Serialize(fs3, Hand);
-            fs.Close();
-            string fileName4 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Id" + Id.ToString() + ".txt";
-            FileStream fs4 = new FileStream(fileName4, FileMode.Create);
-            IFormatter formatter4 = new BinaryFormatter();
-            formatter.Serialize(fs4, Hand);
-            fs.Close();
-        }
+        //public void SaveData()
+        //{
+        //    Streams donde guardaremos la informacion
+        //    string fileName = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Decks" + Id.ToString() + ".txt";
+        //    FileStream fs = new FileStream(fileName, FileMode.Create);
+        //    IFormatter formatter = new BinaryFormatter();
+        //    formatter.Serialize(fs, Deck);
+        //    fs.Close();
+        //    string fileName1 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\LifePoints" + Id.ToString() + ".txt";
+        //    FileStream fs1 = new FileStream(fileName1, FileMode.Create);
+        //    IFormatter formatter1 = new BinaryFormatter();
+        //    formatter.Serialize(fs1, LifePoints);
+        //    fs.Close();
+        //    string fileName2 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\AttackPoints" + Id.ToString() + ".txt";
+        //    FileStream fs2 = new FileStream(fileName2, FileMode.Create);
+        //    IFormatter formatter2 = new BinaryFormatter();
+        //    formatter.Serialize(fs2, AttackPoints);
+        //    fs.Close();
+        //    string fileName3 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Hand" + Id.ToString() + ".txt";
+        //    FileStream fs3 = new FileStream(fileName3, FileMode.Create);
+        //    IFormatter formatter3 = new BinaryFormatter();
+        //    formatter.Serialize(fs3, Hand);
+        //    fs.Close();
+        //    string fileName4 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Id" + Id.ToString() + ".txt";
+        //    FileStream fs4 = new FileStream(fileName4, FileMode.Create);
+        //    IFormatter formatter4 = new BinaryFormatter();
+        //    formatter.Serialize(fs4, Hand);
+        //    fs.Close();
+        //}
 
-        public bool LoadData()
-        {
-            string fileName = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Decks" + Id.ToString() + ".txt";
-            if (!File.Exists(fileName))
-            {
-                return false;
-            }
-            FileStream fs = new FileStream(fileName, FileMode.Open);
-            IFormatter formatter = new BinaryFormatter();
-            Deck = formatter.Deserialize(fs) as Deck;
-            fs.Close();
-            string fileName1 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\LifePoints" + Id.ToString() + ".txt";
-            if (!File.Exists(fileName1))
-            {
-                return false;
-            }
-            FileStream fs1 = new FileStream(fileName1, FileMode.Open);
-            IFormatter formatter1 = new BinaryFormatter();
-            Deck = formatter.Deserialize(fs1) as Deck;
-            fs1.Close();
-            string fileName2 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\AttackPoints" + Id.ToString() + ".txt";
-            if (!File.Exists(fileName2))
-            {
-                return false;
-            }
-            FileStream fs2 = new FileStream(fileName2, FileMode.Open);
-            IFormatter formatter2 = new BinaryFormatter();
-            Deck = formatter.Deserialize(fs2) as Deck;
-            fs2.Close();
-            string fileName3 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Hand" + Id.ToString() + ".txt";
-            if (!File.Exists(fileName3))
-            {
-                return false;
-            }
-            FileStream fs3 = new FileStream(fileName3, FileMode.Open);
-            IFormatter formatter3 = new BinaryFormatter();
-            Deck = formatter.Deserialize(fs3) as Deck;
-            fs3.Close();
-            string fileName4 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Id" + Id.ToString() + ".txt";
-            if (!File.Exists(fileName4))
-            {
-                return false;
-            }
-            FileStream fs4 = new FileStream(fileName4, FileMode.Open);
-            IFormatter formatter4 = new BinaryFormatter();
-            Deck = formatter.Deserialize(fs4) as Deck;
-            fs4.Close();
-            return true;
-        }
+        //public bool LoadData()
+        //{
+        //    string fileName = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Decks" + Id.ToString() + ".txt";
+        //    if (!File.Exists(fileName))
+        //    {
+        //        return false;
+        //    }
+        //    FileStream fs = new FileStream(fileName, FileMode.Open);
+        //    IFormatter formatter = new BinaryFormatter();
+        //    Deck = formatter.Deserialize(fs) as Deck;
+        //    fs.Close();
+        //    string fileName1 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\LifePoints" + Id.ToString() + ".txt";
+        //    if (!File.Exists(fileName1))
+        //    {
+        //        return false;
+        //    }
+        //    FileStream fs1 = new FileStream(fileName1, FileMode.Open);
+        //    IFormatter formatter1 = new BinaryFormatter();
+        //    Deck = formatter.Deserialize(fs1) as Deck;
+        //    fs1.Close();
+        //    string fileName2 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\AttackPoints" + Id.ToString() + ".txt";
+        //    if (!File.Exists(fileName2))
+        //    {
+        //        return false;
+        //    }
+        //    FileStream fs2 = new FileStream(fileName2, FileMode.Open);
+        //    IFormatter formatter2 = new BinaryFormatter();
+        //    Deck = formatter.Deserialize(fs2) as Deck;
+        //    fs2.Close();
+        //    string fileName3 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Hand" + Id.ToString() + ".txt";
+        //    if (!File.Exists(fileName3))
+        //    {
+        //        return false;
+        //    }
+        //    FileStream fs3 = new FileStream(fileName3, FileMode.Open);
+        //    IFormatter formatter3 = new BinaryFormatter();
+        //    Deck = formatter.Deserialize(fs3) as Deck;
+        //    fs3.Close();
+        //    string fileName4 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\Id" + Id.ToString() + ".txt";
+        //    if (!File.Exists(fileName4))
+        //    {
+        //        return false;
+        //    }
+        //    FileStream fs4 = new FileStream(fileName4, FileMode.Open);
+        //    IFormatter formatter4 = new BinaryFormatter();
+        //    Id = formatter.Deserialize(fs4) as int;
+        //    fs4.Close();
+        //    return true;
+        //}
 
     }
 }
