@@ -2,10 +2,14 @@
 using Laboratorio_6_OOP_201902.Enums;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace Laboratorio_6_OOP_201902
 {
+    [Serializable]
     public class Board
     {
         //Constantes
@@ -165,5 +169,6 @@ namespace Laboratorio_6_OOP_201902
             return totalAttack;
         }
 
+        
     }
 }

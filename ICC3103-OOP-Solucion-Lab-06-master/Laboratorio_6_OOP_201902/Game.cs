@@ -9,6 +9,7 @@ using System.Text;
 
 namespace Laboratorio_6_OOP_201902
 {
+    [Serializable]
     public class Game
     {
         //Constantes
@@ -156,6 +157,12 @@ namespace Laboratorio_6_OOP_201902
                     }
                     firstOrSecondUser = ActivePlayer.Id == 0 ? 1 : 0;
                 }
+                
+                foreach(Player player in players)
+                {
+                    player.SaveData();
+                }
+
                 turn += 1;
             }
 
