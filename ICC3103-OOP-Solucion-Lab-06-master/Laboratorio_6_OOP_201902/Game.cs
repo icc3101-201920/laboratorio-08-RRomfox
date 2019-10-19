@@ -179,35 +179,64 @@ namespace Laboratorio_6_OOP_201902
                     ActivePlayer.ChooseCaptainCard(new SpecialCard(Captains[userInput].Name, Captains[userInput].Type, Captains[userInput].Effect));
                     //Asignar mano
                     ActivePlayer.FirstHand();
-                    //Mostrar mano
-                    Visualization.ShowHand(ActivePlayer.Hand);
-                    //Mostar opciones, cambiar carta o pasar
-                    Visualization.ShowListOptions(new List<string>() { "Change Card", "Pass" }, "Change 3 cards or ready to play:");
-                    userInput = Visualization.GetUserInput(1);
-                    if (userInput == 0)
+                    userInput = 0;
+                    while (userInput != 1)
                     {
                         Visualization.ClearConsole();
-                        Visualization.ShowProgramMessage($"Player {ActivePlayer.Id+1} change cards:");
+                        //Mostrar mano
                         Visualization.ShowHand(ActivePlayer.Hand);
-                        for (int i = 0; i < DEFAULT_CHANGE_CARDS_NUMBER; i++)
+                        //Mostar opciones, cambiar carta o pasar
+                        Visualization.ShowListOptions(new List<string>() { "Change 3 cards", "Pass", "See specific card" }, "Select one of the following options:");
+                        userInput = Visualization.GetUserInput(2);
+                        if (userInput == 0)
                         {
-                            Visualization.ShowProgramMessage($"Input the numbers of the cards to change (max {DEFAULT_CHANGE_CARDS_NUMBER}). To stop enter -1");
-                            userInput = Visualization.GetUserInput(ActivePlayer.Hand.Cards.Count, true);
-                            if (userInput == -1) break;
-                            ActivePlayer.ChangeCard(userInput);
+                            Visualization.ClearConsole();
+                            Visualization.ShowProgramMessage($"Player {ActivePlayer.Id + 1} change cards:");
                             Visualization.ShowHand(ActivePlayer.Hand);
+                            for (int i = 0; i < DEFAULT_CHANGE_CARDS_NUMBER; i++)
+                            {
+                                Visualization.ShowProgramMessage($"Input the numbers of the cards to change (max {DEFAULT_CHANGE_CARDS_NUMBER}). To stop enter -1");
+                                userInput = Visualization.GetUserInput(ActivePlayer.Hand.Cards.Count, true);
+                                if (userInput == -1) break;
+                                ActivePlayer.ChangeCard(userInput);
+
+                                int userInputH = -1;
+                                while(userInputH != 0)
+                                {
+                                    Visualization.ClearConsole();
+                                    Visualization.ShowHand(ActivePlayer.Hand);
+                                    Visualization.ShowListOptions(new List<string>() { "Continue", "See specific card" }, "\nSelect one of the following options:");
+                                    userInputH = Visualization.GetUserInput(1);
+                                    if (userInputH == 0)
+                                    {
+                                        userInput = 1;
+                                        break;
+                                    }
+                                    if (userInputH == 1)
+                                    {
+                                        Visualization.ShowHand(ActivePlayer.Hand, 1);
+                                        userInput = 1;
+                                    }
+                                }
+                                if (userInputH == 0)
+                                {
+                                    break;
+                                }
+
+                            }
+                        }
+                        if (userInput == 2)
+                        {
+                            Visualization.ShowHand(ActivePlayer.Hand, 1);
                         }
                     }
+                    
                     firstOrSecondUser = ActivePlayer.Id == 0 ? 1 : 0;
+                    Visualization.ClearConsole();
                 }
                 turn += 1;
                 SaveData();               
             }
-            if (turn == 1)
-            {
-                Console.WriteLine("Data Loaded!");
-            }
-
 
         }
         public void AddDecks()
@@ -291,12 +320,6 @@ namespace Laboratorio_6_OOP_201902
             formatter3.Serialize(fs3, BoardGame );
             fs3.Close();
 
-            //string fileName4 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameTurn.txt";
-            //FileStream fs4 = new FileStream(fileName4, FileMode.Create);
-            //IFormatter formatter4 = new BinaryFormatter();
-            //formatter4.Serialize(fs4, Turn);
-            //fs4.Close();
-
             string fileName5 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameCaptains.txt";
             FileStream fs5 = new FileStream(fileName5, FileMode.Create);
             IFormatter formatter5 = new BinaryFormatter();
@@ -346,16 +369,6 @@ namespace Laboratorio_6_OOP_201902
             IFormatter formatter3 = new BinaryFormatter();
             BoardGame = formatter3.Deserialize(fs3) as Board;
             fs3.Close();
-
-            //string fileName4 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameTurn.txt";
-            //if (!File.Exists(fileName4))
-            //{
-            //    return false;
-            //}
-            //FileStream fs4 = new FileStream(fileName4, FileMode.Open);
-            //IFormatter formatter4 = new BinaryFormatter();
-            //Turn = int.Parse(formatter4.Deserialize(fs4) as string);
-            //fs4.Close();
 
             string fileName5 = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent + @"\Files\GameCaptains.txt";
             if (!File.Exists(fileName5))

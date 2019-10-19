@@ -6,7 +6,7 @@ using System.Text;
 namespace Laboratorio_6_OOP_201902.Cards
 {
     [Serializable]
-    public class CombatCard : Card
+    public class CombatCard : Card , ICharacteristics
     {
         //Atributos
         private int attackPoints;
@@ -45,6 +45,22 @@ namespace Laboratorio_6_OOP_201902.Cards
             }
         }
 
+        public List<string> GetCharacteristics()
+        {
+            List<string> list;
+
+            list = new List<string>()
+            {
+                {Name},
+                $"Type: {Type}",
+                $"Effect: {Effect}",
+                $"AttackPoints: {AttackPoints}",
+                $"Hero: {Hero}"
+            };
+
+            return list;
+
+        }
 
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 namespace Laboratorio_6_OOP_201902.Cards
 {
     [Serializable]
-    public class SpecialCard : Card
+    public class SpecialCard : Card , ICharacteristics
     {
         //Atributos
         private string buffType;
@@ -32,6 +32,25 @@ namespace Laboratorio_6_OOP_201902.Cards
             BuffType = null;
         }
 
+        public List<string> GetCharacteristics()
+        {
+            List<string> list;
 
+            if (BuffType == null)
+            {
+                BuffType = "none";
+            }
+
+            list = new List<string>()
+            {
+                {Name},
+                $"Type: {Type}",
+                $"Effect: {Effect}",
+                $"BuffType: {BuffType}"
+            };
+
+            return list;
+
+        }
     }
 }

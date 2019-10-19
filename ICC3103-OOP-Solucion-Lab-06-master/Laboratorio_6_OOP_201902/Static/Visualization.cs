@@ -8,41 +8,87 @@ namespace Laboratorio_6_OOP_201902.Static
 {
     public static class Visualization
     {
-        public static void ShowHand(Hand hand)
+        public static void ShowHand(Hand hand, int specific = 0)
         {
-            CombatCard combatCard;
-            Console.WriteLine("Hand: ");
-            for (int i = 0; i<hand.Cards.Count; i++)
+            if (specific == 0)
             {
-                if (hand.Cards[i] is CombatCard)
+                CombatCard combatCard;
+                Console.WriteLine("Hand: ");
+                for (int i = 0; i < hand.Cards.Count; i++)
                 {
-                    combatCard = hand.Cards[i] as CombatCard;
+                    if (hand.Cards[i] is CombatCard)
+                    {
+                        combatCard = hand.Cards[i] as CombatCard;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write($"|({i}) {combatCard.Name} ({combatCard.Type}): {combatCard.AttackPoints} |");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write($"|({i}) {hand.Cards[i].Name} ({hand.Cards[i].Type}) |");
+                    }
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+            if (specific == 1)
+            {
+                Console.WriteLine("\nSelect one card in your hand:\n");
+                int op = GetUserInput(hand.Cards.Count);
+                Console.WriteLine();
+
+                if (hand.Cards[op] is CombatCard)
+                {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write($"|({i}) {combatCard.Name} ({combatCard.Type}): {combatCard.AttackPoints} |");
+                    foreach (string j in (hand.Cards[op] as CombatCard).GetCharacteristics())
+                    {
+                        Console.WriteLine(j);
+                    }
+                    Console.ResetColor();
+                    Console.WriteLine();
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.Write($"|({i}) {hand.Cards[i].Name} ({hand.Cards[i].Type}) |");
+                    foreach (string j in (hand.Cards[op] as SpecialCard).GetCharacteristics())
+                    {
+                        Console.WriteLine(j);
+                    }
+                    Console.ResetColor();
+                    Console.WriteLine();
                 }
                 Console.ResetColor();
+
+                Console.WriteLine("\nPress any key to continue");
+                Console.ReadLine();
             }
-            Console.WriteLine();
+
+            
         }
         public static void ShowDecks(List<Deck> decks)
         {
-            Console.WriteLine("Select one Deck:");
+            Console.WriteLine("Select one Deck:\n");
             for (int i = 0; i<decks.Count; i++)
             {
-                Console.WriteLine($"({i}) Deck {i+1}");
+                Console.WriteLine($"({i}) Deck {i+1}:");
+                foreach (string j in decks[i].GetCharacteristics())
+                {
+                    Console.WriteLine(j);
+                }
+                Console.WriteLine();
             }
         }
         public static void ShowCaptains(List<SpecialCard> captains)
         {
-            Console.WriteLine("Select one captain:");
+            Console.WriteLine("\nSelect one captain:\n");
             for (int i = 0; i < captains.Count; i++)
             {
-                Console.WriteLine($"({i}) {captains[i].Name}: {captains[i].Effect}");
+                Console.Write($"({i}) ");
+                foreach (string j in captains[i].GetCharacteristics())
+                {
+                    Console.WriteLine(j);
+                }
+                Console.WriteLine();
             }
         }
         public static int GetUserInput(int maxInput, bool stopper = false)
